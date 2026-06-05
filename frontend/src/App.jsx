@@ -15,7 +15,7 @@ function PublicSite() {
   const [activePage, setLocalActivePage] = useState('home'); // 'home' | 'products' | 'about'
   const navigate = useNavigate();
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('theme') || 'dark';
+    return localStorage.getItem('theme') || 'light';
   });
 
   const setActivePage = (page) => {
