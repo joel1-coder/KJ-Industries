@@ -2,7 +2,6 @@
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/dist",
   "framework": "vite",
-  "root": "frontend",
   "env": {
     "VITE_API_URL": {
       "description": "Backend API URL",
