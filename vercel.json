@@ -1,8 +1,15 @@
 {
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/dist",
-  "framework": "vite",
-  "env": {
-    "VITE_API_URL": "https://kj-industries-api.onrender.com"
-  }
+  "projects": [
+    {
+      "name": "kj-industries-frontend",
+      "src": "frontend",
+      "buildCommand": "npm run build",
+      "installCommand": "npm install",
+      "outputDirectory": "dist",
+      "framework": "vite",
+      "env": {
+        "VITE_API_URL": "https://kj-industries-api.onrender.com"
+      }
+    }
+  ]
 }
