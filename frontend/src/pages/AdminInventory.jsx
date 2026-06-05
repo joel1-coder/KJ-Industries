@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   LayoutDashboard, ShoppingBag, CreditCard, FileText, Settings, 
   HelpCircle, LogOut, Search, Filter, Box, Shield, Server,
-  MoreVertical, ChevronLeft, ChevronRight, Zap, Braces, Plus
+  Edit2, Trash2, ChevronLeft, ChevronRight, Zap, Braces, Plus
 } from 'lucide-react';
 import teamAlex from '../assets/images/team_alex.png';
 import '../Admin.css';
@@ -215,11 +215,21 @@ export default function AdminInventory({ setActivePage }) {
                     </td>
                     <td style={{ color: 'rgba(255, 255, 255, 0.7)' }}>{item.dateAdded}</td>
                     <td style={{ textAlign: 'right' }}>
-                      <button className="admin-icon-btn" style={{ display: 'inline-flex', width: '32px', height: '32px', border: 'none', marginRight: '4px' }}>
-                        <Box size={14} />
+                      <button 
+                        className="admin-icon-btn" 
+                        style={{ display: 'inline-flex', width: '32px', height: '32px', border: 'none', marginRight: '4px' }}
+                        title="Edit Product"
+                        onClick={() => alert(`Edit product: ${item.name}`)}
+                      >
+                        <Edit2 size={14} />
                       </button>
-                      <button className="admin-icon-btn" style={{ display: 'inline-flex', width: '32px', height: '32px', border: 'none' }}>
-                        <MoreVertical size={14} />
+                      <button 
+                        className="admin-icon-btn" 
+                        style={{ display: 'inline-flex', width: '32px', height: '32px', border: 'none', color: '#ef4444' }}
+                        title="Delete Product"
+                        onClick={() => alert(`Delete product: ${item.name}`)}
+                      >
+                        <Trash2 size={14} />
                       </button>
                     </td>
                   </tr>
