@@ -3,9 +3,6 @@
   "outputDirectory": "frontend/dist",
   "framework": "vite",
   "env": {
-    "VITE_API_URL": {
-      "description": "Backend API URL",
-      "default": "https://kj-industries-api.onrender.com"
-    }
+    "VITE_API_URL": "https://kj-industries-api.onrender.com"
   }
 }
