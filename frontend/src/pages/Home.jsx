@@ -23,7 +23,7 @@ export default function Home({ setActivePage }) {
 
     try {
       await emailjs.send(
-        'service_jozmq0q',
+        'service_b77noeo',
         'template_p4mst2v',
         {
           from_name: name,
