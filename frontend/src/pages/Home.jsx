@@ -6,11 +6,13 @@ import fluxstoreEcom from '../assets/images/fluxstore_ecom.png';
 import atlasProject from '../assets/images/atlas_project.png';
 
 export default function Home({ setActivePage }) {
-  const [formStatus, setFormStatus] = useState('idle'); // idle | sending | success
+  const [formStatus, setFormStatus] = useState('idle'); // idle | sending | success | error
+  const [feedbackMsg, setFeedbackMsg] = useState('');
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
     setFormStatus('sending');
+    setFeedbackMsg('');
     const formData = new FormData(e.target);
     const name = formData.get('name');
     const email = formData.get('email');
@@ -18,25 +20,31 @@ export default function Home({ setActivePage }) {
     const subject = formData.get('subject') || 'Project Inquiry';
     const message = formData.get('message');
 
-    // Save to backend (non-blocking)
     try {
-      await fetch(`${API_BASE}/api/contact`, {
+      const response = await fetch(`${API_BASE}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, mobile, subject, message }),
       });
-    } catch (_) {
-      // backend offline - mailto still works
+      const data = await response.json();
+      
+      if (data.success) {
+        setFormStatus('success');
+        setFeedbackMsg(data.message || 'Thank you! Your message has been received successfully.');
+        e.target.reset();
+      } else {
+        setFormStatus('error');
+        setFeedbackMsg(data.message || 'Failed to submit form. Please try again.');
+      }
+    } catch (err) {
+      setFormStatus('error');
+      setFeedbackMsg('Network error. Unable to connect to the server. Please try again later.');
     }
 
-    // Open user's mail client pre-filled
-    const bodyText = `Full Name: ${name}\nEmail: ${email}\nMobile: ${mobile}\n\nMessage:\n${message}`;
-    const mailtoUrl = `mailto:kjindus70@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
-    window.location.href = mailtoUrl;
-
-    setFormStatus('success');
-    e.target.reset();
-    setTimeout(() => setFormStatus('idle'), 5000);
+    setTimeout(() => {
+      setFormStatus('idle');
+      setFeedbackMsg('');
+    }, 6000);
   };
 
   return (
@@ -359,7 +367,24 @@ export default function Home({ setActivePage }) {
                     alignItems: 'center',
                     gap: '8px'
                   }}>
-                    ✓ Message sent! Your mail client should have opened. We'll get back to you soon.
+                    ✓ {feedbackMsg}
+                  </div>
+                )}
+                {formStatus === 'error' && (
+                  <div style={{
+                    background: 'rgba(255, 69, 58, 0.12)',
+                    border: '1px solid rgba(255, 69, 58, 0.3)',
+                    color: '#ff453a',
+                    padding: '12px 20px',
+                    borderRadius: '10px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    marginBottom: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}>
+                    ⚠️ {feedbackMsg}
                   </div>
                 )}
                 <button
@@ -368,7 +393,7 @@ export default function Home({ setActivePage }) {
                   disabled={formStatus === 'sending'}
                   style={{ opacity: formStatus === 'sending' ? 0.7 : 1 }}
                 >
-                  {formStatus === 'sending' ? 'Opening mail…' : 'Send Message'} <Send size={14} />
+                  {formStatus === 'sending' ? 'Sending message…' : 'Send Message'} <Send size={14} />
                 </button>
               </div>
             </form>

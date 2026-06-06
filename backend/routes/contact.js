@@ -1,10 +1,29 @@
 const express = require('express');
 const router = express.Router();
+const nodemailer = require('nodemailer');
 
 // In-memory store for contact submissions (replace with DB later)
 const submissions = [];
 
-router.post('/', (req, res) => {
+// Create Transporter using Env Variables
+const createTransporter = () => {
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+
+  if (!user || !pass) {
+    console.log('⚠️ [Mailer] SMTP credentials not configured. Contact messages will not be emailed.');
+    return null;
+  }
+
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    port: parseInt(process.env.SMTP_PORT || '465'),
+    secure: process.env.SMTP_SECURE !== 'false', // true for 465, false for 587
+    auth: { user, pass }
+  });
+};
+
+router.post('/', async (req, res) => {
   const { name, email, mobile, subject, message } = req.body;
 
   if (!name || !email || !message) {
@@ -19,7 +38,7 @@ router.post('/', (req, res) => {
     subject: subject || 'Project Inquiry',
     message,
     receivedAt: new Date().toISOString(),
-    to: 'kjindus70@gmail.com',
+    to: process.env.CONTACT_RECEIVER || 'kjindus70@gmail.com',
   };
 
   submissions.push(entry);
@@ -28,11 +47,58 @@ router.post('/', (req, res) => {
   console.log(`   From: ${name} <${email}>`);
   console.log(`   Subject: ${entry.subject}`);
   console.log(`   Message: ${message.substring(0, 80)}...`);
-  console.log(`   Saved to: kjindus70@gmail.com\n`);
+
+  // Attempt to send email
+  const transporter = createTransporter();
+  let emailSent = false;
+  let emailError = null;
+
+  if (transporter) {
+    const mailOptions = {
+      from: `"${name} (via Precision)" <${process.env.SMTP_USER}>`,
+      replyTo: email,
+      to: entry.to,
+      subject: `[Precision Inquiry] ${entry.subject}`,
+      text: `New contact submission received from your website:\n\n` +
+            `Name: ${name}\n` +
+            `Email: ${email}\n` +
+            `Mobile: ${entry.mobile}\n` +
+            `Subject: ${entry.subject}\n\n` +
+            `Message:\n${message}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; line-height: 1.6;">
+          <h2 style="color: #00e5ff; border-bottom: 1px solid #ddd; padding-bottom: 10px;">New Contact Submission</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+          <p><strong>Mobile:</strong> ${entry.mobile}</p>
+          <p><strong>Subject:</strong> ${entry.subject}</p>
+          <div style="background: #f9f9f9; border-left: 4px solid #00e5ff; padding: 15px; margin-top: 20px;">
+            <p style="margin: 0; font-weight: bold;">Message:</p>
+            <p style="margin: 10px 0 0 0; white-space: pre-wrap;">${message}</p>
+          </div>
+          <hr style="border: 0; border-top: 1px solid #eee; margin-top: 30px;" />
+          <p style="font-size: 12px; color: #999;">This email was sent automatically from your Precision Software Marketplace website.</p>
+        </div>
+      `
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(`   ✅ Email successfully sent to: ${entry.to}`);
+      emailSent = true;
+    } catch (err) {
+      console.error(`   ❌ Failed to send email:`, err.message);
+      emailError = err.message;
+    }
+  }
 
   res.json({
     success: true,
-    message: 'Your message has been received. We will get back to you shortly!',
+    message: emailSent 
+      ? 'Your message has been sent to our team successfully!' 
+      : 'Your message has been received! (Email notification pending server SMTP configuration).',
+    emailSent,
+    emailError,
     data: { id: entry.id, receivedAt: entry.receivedAt },
   });
 });
