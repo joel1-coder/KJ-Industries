@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Grid, List, Star, ChevronDown } from 'lucide-react';
+import { API_BASE } from '../config';
 import omnicoreAdmin from '../assets/images/omnicore_admin.png';
 import fluxstoreEcom from '../assets/images/fluxstore_ecom.png';
 import atlasProject from '../assets/images/atlas_project.png';
@@ -26,7 +27,7 @@ export default function Products() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const url = `http://localhost:5000/api/products?category=${category}&search=${search}&sort=${sort}`;
+      const url = `${API_BASE}/api/products?category=${category}&search=${search}&sort=${sort}`;
       const response = await fetch(url);
       const data = await response.json();
       if (data.success) {

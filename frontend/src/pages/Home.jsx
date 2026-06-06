@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, Mail, Cpu, Terminal, Shield, Zap, RefreshCw, HardDrive, Send } from 'lucide-react';
+import { API_BASE } from '../config';
 import omnicoreAdmin from '../assets/images/omnicore_admin.png';
 import fluxstoreEcom from '../assets/images/fluxstore_ecom.png';
 import atlasProject from '../assets/images/atlas_project.png';
@@ -19,7 +20,7 @@ export default function Home({ setActivePage }) {
 
     // Save to backend (non-blocking)
     try {
-      await fetch('http://localhost:5000/api/contact', {
+      await fetch(`${API_BASE}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, mobile, subject, message }),

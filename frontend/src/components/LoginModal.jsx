@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Lock, Mail } from 'lucide-react';
+import { API_BASE } from '../config';
 
 export default function LoginModal({ onClose, onLoginSuccess }) {
   const [email, setEmail] = useState('admin@precision.dev');
@@ -15,7 +16,7 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

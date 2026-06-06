@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, Mail, Lock, CheckCircle2, Shield } from 'lucide-react';
+import { API_BASE } from '../config';
 import '../Admin.css';
 
 export default function AdminLogin({ setActivePage }) {
@@ -16,7 +17,7 @@ export default function AdminLogin({ setActivePage }) {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
