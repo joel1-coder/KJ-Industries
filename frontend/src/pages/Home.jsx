@@ -26,11 +26,11 @@ export default function Home({ setActivePage }) {
         'service_b77noeo',
         'template_6ukv74r',
         {
-          from_name: name,
-          from_email: email,
-          mobile: mobile,
-          subject: subject,
+          name: name,
+          email: email,
+          title: subject,
           message: message,
+          mobile: mobile,
         },
         'wwxIlB4EbuEd8woEd'
       );
