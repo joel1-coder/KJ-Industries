@@ -4,6 +4,7 @@
   "description": "Precision Software Marketplace - Backend API",
   "main": "server.js",
   "scripts": {
+    "build": "cd ../frontend && npm install && npm run build",
     "start": "node server.js",
     "dev": "node --watch server.js"
   },
