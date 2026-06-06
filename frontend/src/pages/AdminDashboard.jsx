@@ -45,9 +45,9 @@ export default function AdminDashboard({ setActivePage }) {
       {/* Left Sidebar */}
       <aside className="admin-sidebar">
         <div className="sidebar-top">
-          <a href="#home" onClick={() => setActivePage('home')} className="sidebar-logo">
+          <button onClick={() => setActivePage('home')} className="sidebar-logo">
             <Shield size={22} className="sidebar-logo-icon" /> PRECISION
-          </a>
+          </button>
 
           <div className="sidebar-section">
             <span className="sidebar-section-title">CORE SYSTEMS</span>
@@ -61,18 +61,11 @@ export default function AdminDashboard({ setActivePage }) {
                 </button>
               </li>
               <li>
-                <button className="sidebar-link" onClick={() => alert('Purchases log is in read-only')}>
-                  <ShoppingBag size={16} /> Purchases
-                </button>
-              </li>
-              <li>
-                <button className="sidebar-link" onClick={() => alert('Subscriptions log is in read-only')}>
-                  <CreditCard size={16} /> Subscriptions
-                </button>
-              </li>
-              <li>
-                <button className="sidebar-link" onClick={() => alert('Invoices panel is in read-only')}>
-                  <FileText size={16} /> Invoices
+                <button 
+                  className="sidebar-link" 
+                  onClick={() => setActivePage('admin-inventory')}
+                >
+                  <Box size={16} /> Inventory
                 </button>
               </li>
               <li>
@@ -88,17 +81,14 @@ export default function AdminDashboard({ setActivePage }) {
         </div>
 
         <div className="sidebar-bottom">
-          <button className="sidebar-link" onClick={() => alert('Precision Intelligence support ticket system')}>
-            <HelpCircle size={16} /> Support
-          </button>
           <button className="sidebar-link" onClick={handleLogout}>
             <LogOut size={16} /> Sign Out
           </button>
 
           <div className="sidebar-user-block">
-            <img src={teamAlex} alt="Alex Thorne" className="sidebar-avatar" />
+            <img src={teamAlex} alt="Admin" className="sidebar-avatar" />
             <div className="sidebar-user-info">
-              <span className="sidebar-username">Alex Thorne</span>
+              <span className="sidebar-username">Admin User</span>
               <span className="sidebar-tier">ENTERPRISE TIER</span>
             </div>
           </div>
@@ -114,11 +104,8 @@ export default function AdminDashboard({ setActivePage }) {
           </div>
 
           <div className="admin-header-actions">
-            <button className="admin-icon-btn" onClick={() => alert('No new notifications')}>
-              <Bell size={18} />
-            </button>
-            <button className="admin-btn-primary" onClick={() => alert('Create New Project flow initialized')}>
-              <Plus size={16} /> New Project
+            <button className="admin-btn-primary" onClick={() => setActivePage('admin-inventory')}>
+              <Plus size={16} /> Manage Products
             </button>
           </div>
         </div>
