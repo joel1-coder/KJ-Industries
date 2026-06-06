@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { ArrowRight, Mail, Cpu, Terminal, Shield, Zap, RefreshCw, HardDrive, Send } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import { API_BASE } from '../config';
+
+// Initialize EmailJS with public key
+emailjs.init('wwxIlB4EbuEd8woEd');
 import omnicoreAdmin from '../assets/images/omnicore_admin.png';
 import fluxstoreEcom from '../assets/images/fluxstore_ecom.png';
 import atlasProject from '../assets/images/atlas_project.png';
@@ -31,8 +34,7 @@ export default function Home({ setActivePage }) {
           title: subject,
           message: message,
           mobile: mobile,
-        },
-        'wwxIlB4EbuEd8woEd'
+        }
       );
       
       setFormStatus('success');
