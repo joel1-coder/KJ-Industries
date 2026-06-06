@@ -18,7 +18,34 @@ app.use('/api/contact', require('./routes/contact'));
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Precision API is running', timestamp: new Date().toISOString() });
+  const fs = require('fs');
+  const path = require('path');
+  const distPath = path.join(__dirname, '..', 'frontend', 'dist');
+  let distExists = false;
+  let distFiles = [];
+  try {
+    distExists = fs.existsSync(distPath);
+    if (distExists) {
+      distFiles = fs.readdirSync(distPath);
+    }
+  } catch (err) {
+    distFiles = [err.message];
+  }
+
+  res.json({
+    status: 'ok',
+    message: 'Precision API is running',
+    timestamp: new Date().toISOString(),
+    env: {
+      NODE_ENV: process.env.NODE_ENV,
+      PORT: process.env.PORT,
+      cwd: process.cwd(),
+      dirname: __dirname,
+      distPath: distPath,
+      distExists: distExists,
+      distFiles: distFiles
+    }
+  });
 });
 
 // --- Serve Frontend in Production ---
