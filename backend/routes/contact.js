@@ -111,7 +111,15 @@ router.post('/', async (req, res) => {
         })
       });
 
-      const result = await response.json();
+      let result = {};
+      const contentType = response.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        result = await response.json();
+      } else {
+        const textResponse = await response.text();
+        result = { message: textResponse.substring(0, 150) };
+      }
+
       if (response.ok) {
         console.log(`   ✅ Email successfully forwarded via Formsubmit.co!`);
         emailSent = true;
