@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, Mail, Cpu, Terminal, Shield, Zap, RefreshCw, HardDrive, Send } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 import { API_BASE } from '../config';
 import omnicoreAdmin from '../assets/images/omnicore_admin.png';
 import fluxstoreEcom from '../assets/images/fluxstore_ecom.png';
@@ -21,24 +22,26 @@ export default function Home({ setActivePage }) {
     const message = formData.get('message');
 
     try {
-      const response = await fetch(`${API_BASE}/api/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, mobile, subject, message }),
-      });
-      const data = await response.json();
+      await emailjs.send(
+        'service_jozmq0q',
+        'template_p4mst2v',
+        {
+          from_name: name,
+          from_email: email,
+          mobile: mobile,
+          subject: subject,
+          message: message,
+        },
+        'IVdcbIrBfShbFsjSn'
+      );
       
-      if (data.success) {
-        setFormStatus('success');
-        setFeedbackMsg(data.message || 'Thank you! Your message has been received successfully.');
-        e.target.reset();
-      } else {
-        setFormStatus('error');
-        setFeedbackMsg(data.message || 'Failed to submit form. Please try again.');
-      }
+      setFormStatus('success');
+      setFeedbackMsg('Thank you! Your message has been sent successfully.');
+      e.target.reset();
     } catch (err) {
+      console.error('EmailJS Error:', err);
       setFormStatus('error');
-      setFeedbackMsg('Network error. Unable to connect to the server. Please try again later.');
+      setFeedbackMsg('Failed to send message. Please try again later.');
     }
 
     setTimeout(() => {
