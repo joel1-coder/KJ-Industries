@@ -1,4 +1,4 @@
-/* Header Navigation (Apple Style) */
+/* Header Navigation */
 .navbar-header {
   border-bottom: 1px solid var(--border-color);
   background: var(--bg-navbar);
@@ -6,8 +6,12 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: 14px 0;
+  padding: 12px 0;
   transition: all 0.3s ease;
+}
+
+.navbar-header.navbar-scrolled {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
 .nav-container {
@@ -18,22 +22,51 @@
 
 .logo-brand {
   font-family: var(--font-sans);
-  font-size: 19px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--text-navbar);
   text-decoration: none;
   display: flex;
   align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
   opacity: 0.92;
 }
 
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 36px;
+  gap: 8px;
 }
 
+.nav-link-btn {
+  background: none;
+  border: none;
+  color: var(--text-navbar);
+  opacity: 0.55;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  letter-spacing: -0.01em;
+}
+
+.nav-link-btn:hover {
+  opacity: 0.85;
+  background: rgba(128, 128, 128, 0.08);
+}
+
+.nav-link-btn.active {
+  opacity: 1;
+  background: rgba(128, 128, 128, 0.1);
+}
+
+/* Keep old anchor styles for compatibility */
 .nav-links a {
   color: var(--text-navbar);
   opacity: 0.65;
@@ -52,23 +85,166 @@
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 12px;
+}
+
+.nav-right-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .nav-icon-btn {
   background: none;
   border: none;
   color: var(--text-navbar);
-  opacity: 0.65;
+  opacity: 0.55;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.3s;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s;
 }
 
 .nav-icon-btn:hover {
   opacity: 1;
+  background: rgba(128, 128, 128, 0.08);
+}
+
+/* Admin Login Button (visible when not logged in) */
+.nav-admin-login-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-navbar);
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  opacity: 0.7;
+}
+
+.nav-admin-login-btn:hover {
+  opacity: 1;
+  background: rgba(128, 128, 128, 0.08);
+  border-color: var(--border-color-hover);
+}
+
+/* Admin Pill (visible when logged in) */
+.nav-admin-pill {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(128, 128, 128, 0.04);
+}
+
+.nav-admin-dash-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.nav-admin-dash-btn:hover {
+  background: rgba(128, 128, 128, 0.06);
+}
+
+.nav-admin-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-color);
+}
+
+.nav-admin-logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 10px;
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  transition: background 0.2s;
+  opacity: 0.7;
+}
+
+.nav-admin-logout-btn:hover {
+  background: rgba(239, 68, 68, 0.06);
+  opacity: 1;
+}
+
+/* Mobile Toggle */
+.nav-mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-navbar);
+  cursor: pointer;
+  padding: 4px;
+}
+
+/* Mobile Menu */
+.nav-mobile-menu {
+  display: none;
+  flex-direction: column;
+  padding: 12px 20px 20px;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-navbar);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+
+.nav-mobile-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: var(--text-navbar);
+  opacity: 0.7;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  width: 100%;
+}
+
+.nav-mobile-link:hover,
+.nav-mobile-link.active {
+  opacity: 1;
+  background: rgba(128, 128, 128, 0.06);
+}
+
+.nav-mobile-link.nav-mobile-logout {
+  color: #ef4444;
+}
+
+.nav-mobile-link.nav-mobile-admin {
+  color: var(--color-primary);
+}
+
+.nav-mobile-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 8px 0;
 }
 
 .avatar-img {
@@ -78,6 +254,22 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
   object-fit: cover;
 }
+
+@media (max-width: 768px) {
+  .nav-links,
+  .nav-actions {
+    display: none;
+  }
+
+  .nav-mobile-toggle {
+    display: flex;
+  }
+
+  .nav-mobile-menu {
+    display: flex;
+  }
+}
+
 
 /* Home / Landing Page Styles */
 .hero-section {
