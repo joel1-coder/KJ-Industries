@@ -4,7 +4,7 @@
 A dark-themed, premium software marketplace website inspired by the "PRECISION" design. The site features a modern SaaS/software marketplace with product listings, pricing tiers, client testimonials, and a professional landing page.
 
 ## Tech Stack
-- **Frontend**: Vanilla HTML5, CSS3, JavaScript (no frameworks)
+- **Frontend**: REACT JS framework
 - **Backend**: Node.js with Express.js (prepared for admin login system)
 - **Fonts**: Google Fonts (Inter, JetBrains Mono)
 - **Icons**: Lucide Icons (CDN)
