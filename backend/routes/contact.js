@@ -139,7 +139,7 @@ router.post('/', async (req, res) => {
     success: true,
     message: emailSent 
       ? 'Your message has been sent to our team successfully!' 
-      : 'Your message has been received! (Email notification pending server SMTP configuration).',
+      : 'Your message has been received successfully!',
     emailSent,
     emailError,
     data: { id: entry.id, receivedAt: entry.receivedAt },
