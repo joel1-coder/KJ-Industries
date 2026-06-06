@@ -24,7 +24,7 @@ export default function Home({ setActivePage }) {
     try {
       await emailjs.send(
         'service_b77noeo',
-        'template_p4mst2v',
+        'template_6ukv74r',
         {
           from_name: name,
           from_email: email,
@@ -32,7 +32,7 @@ export default function Home({ setActivePage }) {
           subject: subject,
           message: message,
         },
-        'IVdcbIrBfShbFsjSn'
+        'wwxIlB4EbuEd8woEd'
       );
       
       setFormStatus('success');
