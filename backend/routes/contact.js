@@ -77,7 +77,7 @@ router.post('/', async (req, res) => {
             <p style="margin: 10px 0 0 0; white-space: pre-wrap;">${message}</p>
           </div>
           <hr style="border: 0; border-top: 1px solid #eee; margin-top: 30px;" />
-          <p style="font-size: 12px; color: #999;">This email was sent automatically from your Precision Software Marketplace website.</p>
+          <p style="font-size: 12px; color: #999;">This email was sent automatically from your Precision Website.</p>
         </div>
       `
     };
@@ -88,6 +88,39 @@ router.post('/', async (req, res) => {
       emailSent = true;
     } catch (err) {
       console.error(`   ❌ Failed to send email:`, err.message);
+      emailError = err.message;
+    }
+  } else {
+    // Fallback: Send email via free Formsubmit.co endpoint immediately without credentials
+    try {
+      console.log(`   ✉️ Attempting to forward email via Formsubmit.co to: ${entry.to}...`);
+      const response = await fetch(`https://formsubmit.co/ajax/${entry.to}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          Name: name,
+          Email: email,
+          Mobile: entry.mobile,
+          Subject: entry.subject,
+          Message: message,
+          _honey: "", // Honeypot field for spam prevention
+          _subject: `[Precision Website Inquiry] ${entry.subject}`
+        })
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        console.log(`   ✅ Email successfully forwarded via Formsubmit.co!`);
+        emailSent = true;
+      } else {
+        console.error(`   ❌ Formsubmit.co responded with error:`, result.message);
+        emailError = result.message || 'Formsubmit error';
+      }
+    } catch (err) {
+      console.error(`   ❌ Failed to forward email via Formsubmit.co:`, err.message);
       emailError = err.message;
     }
   }
