@@ -4,7 +4,7 @@ import emailjs from '@emailjs/browser';
 import { API_BASE } from '../config';
 
 // Initialize EmailJS with public key
-emailjs.init('wwxIlB4EbuEd8woEd');
+emailjs.init('IVdcbIrBfShbFsjSn');
 import omnicoreAdmin from '../assets/images/omnicore_admin.png';
 import fluxstoreEcom from '../assets/images/fluxstore_ecom.png';
 import atlasProject from '../assets/images/atlas_project.png';
