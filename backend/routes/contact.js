@@ -98,7 +98,9 @@ router.post('/', async (req, res) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Origin': req.get('origin') || 'https://kj-industries.onrender.com',
+          'Referer': req.get('referer') || 'https://kj-industries.onrender.com/'
         },
         body: JSON.stringify({
           Name: name,
